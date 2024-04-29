@@ -191,7 +191,10 @@ $ sudo make install
 
 ## デバッグ
 - OpenOCDを起動
-もしかしたら/dev/memのアクセス権が必要かもしれません(動いたらCtrl＋Cで停止)
+もしかしたら/dev/memのアクセス権が必要かもしれません。
+Ubuntu22.04ではrootで起動が必要でした。
+権限付けたらOKでした  
+(動いたらCtrl＋Cで停止)
   ```
   $ openocd -f interface/cmsis-dap.cfg -f target/rp2040.cfg
   ```
@@ -213,3 +216,53 @@ $ sudo make install
   $ code .
   ```
   「実行とデバッグ」(Ctrl＋Shift＋D)からデバッグの開始(F5)でデバッグを開始
+
+## プロジェクトの作成
+- pico-project-generatorのインストール
+  ```
+  $ cd ~/pico
+  $ git clone https://github.com/raspberrypi/pico-project-generator.git --branch master
+  $ sudo apt install python3-tk
+  ```
+
+- pico-project-generatorの起動
+  ```
+  $ cd ~/pico/workspace
+  $ ../pico-project-generator/pico_project.py --gui
+  ```
+![alt text](project-1.png)
+
+- minicomの設定
+```
+$ minicom -s
+```
+ Serial port setup を選んでenter
+ Aを押してSerial Device　を変更
+ Eを押してSerial Device　を変更
+```
+    +-----------------------------------------------------------------------+
+    | A -    Serial Device      : /dev/ttyACM0                              |
+    | B - Lockfile Location     : /var/lock                                 |
+    | C -   Callin Program      :                                           |
+    | D -  Callout Program      :                                           |
+    | E -    Bps/Par/Bits       : 115200 8N1                                |
+    | F - Hardware Flow Control : No                                        |
+    | G - Software Flow Control : No                                        |
+    | H -     RS485 Enable      : No                                        |
+    | I -   RS485 Rts On Send   : No                                        |
+    | J -  RS485 Rts After Send : No                                        |
+    | K -  RS485 Rx During Tx   : No                                        |
+    | L -  RS485 Terminate Bus  : No                                        |
+    | M - RS485 Delay Rts Before: 0                                         |
+    | N - RS485 Delay Rts After : 0                                         |
+    |                                                                       |
+    +-----------------------------------------------------------------------+
+```
+
+- minicomの起動
+別窓で
+```
+$ minicom
+```
+
+デバッグを実行
